@@ -13,8 +13,8 @@
         "typescript.tsc.autoDetect": "off",
         "C_Cpp.default.forcedInclude": [
             "${default}",
-            "C:\\Users\\manuel.segura\\source\\repos\\MPVJ.Practicas.Com\\Com_03_Part3\\Intermediate\\Build\\Win64\\UE4Editor\\Development\\Com_03_Part3\\Definitions.Com_03_Part3.h",
-            "C:\\Users\\manuel.segura\\source\\repos\\MPVJ.Practicas.Com\\Com_03_Part3\\Intermediate\\Build\\Win64\\Com_03_Part3Editor\\Development\\Engine\\SharedPCH.Engine.ShadowErrors.h"
+            "C:\\Repos\\MPVJ.Practicas.Com\\Com_03_Part3\\Intermediate\\Build\\Win64\\UE4Editor\\Development\\Com_03_Part3\\Definitions.Com_03_Part3.h",
+            "C:\\Repos\\MPVJ.Practicas.Com\\Com_03_Part3\\Intermediate\\Build\\Win64\\Com_03_Part3Editor\\Development\\Engine\\SharedPCH.Engine.ShadowErrors.h"
         ]
     },
     "extensions": {
