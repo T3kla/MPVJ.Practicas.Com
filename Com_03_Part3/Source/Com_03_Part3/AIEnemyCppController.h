@@ -8,4 +8,8 @@ UCLASS()
 class COM_03_PART3_API AAIEnemyCppController : public AAIController
 {
     GENERATED_BODY()
+
+  public:
+    UFUNCTION(BlueprintCallable, Category = "Ejercicio")
+    void UpdateNextTargetPoint();
 };
