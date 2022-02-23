@@ -1,5 +1,6 @@
 #include "UpdateNextTargetPoint.h"
 
+#include "BehaviorTree/BehaviorTreeComponent.h"
 #include "AIEnemyCppController.h"
 
 EBTNodeResult::Type UUpdateNextTargetPoint::ExecuteTask(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory)

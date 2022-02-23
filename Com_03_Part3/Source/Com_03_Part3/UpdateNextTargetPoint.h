@@ -3,8 +3,9 @@
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
 #include "BehaviorTree/BehaviorTreeTypes.h"
-#include "BehaviorTree/BehaviorTreeComponent.h"
 #include "UpdateNextTargetPoint.generated.h"
+
+class UBehaviorTreeComponent;
 
 UCLASS()
 class COM_03_PART3_API UUpdateNextTargetPoint : public UBTTaskNode

@@ -12,4 +12,7 @@ class COM_03_PART3_API AAIEnemyCppController : public AAIController
   public:
     UFUNCTION(BlueprintCallable, Category = "Ejercicio")
     void UpdateNextTargetPoint();
+
+    UFUNCTION(BlueprintCallable, Category = "Ejercicio")
+    void CheckNearbyEnemy();
 };
