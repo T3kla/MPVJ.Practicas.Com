@@ -2,10 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTService.h"
-#include "CheckNearbyEnemy.generated.h"
+#include "CheckNearbyEnemyBTService.generated.h"
 
 UCLASS()
-class COM_03_PART3_API UCheckNearbyEnemy : public UBTService
+class COM_03_PART3_API UCheckNearbyEnemyBTService : public UBTService
 {
     GENERATED_BODY()
 
