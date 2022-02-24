@@ -15,4 +15,7 @@ class COM_03_PART3_API AAIEnemyCppController : public AAIController
 
     UFUNCTION(BlueprintCallable, Category = "Ejercicio")
     void CheckNearbyEnemy();
+
+    UFUNCTION(BlueprintCallable, Category = "Ejercicio")
+    EPathFollowingRequestResult::Type MoveToEnemy();
 };

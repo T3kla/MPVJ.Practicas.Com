@@ -1,8 +1,8 @@
-#include "CheckNearbyEnemy.h"
+#include "CheckNearbyEnemyBTService.h"
 #include "AIEnemyCppController.h"
 
-void UCheckNearbyEnemy::TickNode(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory,
-                                 float DeltaSeconds)
+void UCheckNearbyEnemyBTService::TickNode(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory,
+                                          float DeltaSeconds)
 {
     Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 

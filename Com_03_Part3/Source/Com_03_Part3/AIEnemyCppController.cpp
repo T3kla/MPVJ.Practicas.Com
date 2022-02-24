@@ -77,3 +77,15 @@ void AAIEnemyCppController::CheckNearbyEnemy()
         pBlackboardComponent->SetValueAsObject("TargetActorToFollow", nullptr);
     }
 }
+
+EPathFollowingRequestResult::Type AAIEnemyCppController::MoveToEnemy()
+{
+    UBlackboardComponent *pBlackboardComponent = BrainComponent->GetBlackboardComponent();
+
+    AActor *pHeroCharacterActor =
+        Cast<AActor>(pBlackboardComponent->GetValueAsObject("TargetActorToFollow"));
+
+    EPathFollowingRequestResult::Type MoveToActorResult = MoveToActor(pHeroCharacterActor);
+
+    return MoveToActorResult;
+}
