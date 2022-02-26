@@ -4,20 +4,40 @@
 #include "AIController.h"
 #include "AIEnemyControllerCpp.generated.h"
 
-class UAIPerceptionComponent;
-
 UCLASS()
 class COM_05_API AAIEnemyControllerCpp : public AAIController
 {
     GENERATED_BODY()
 
+  public:
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    float TravelDelay = 1.f;
+
+  protected:
     AAIEnemyControllerCpp();
 
-    UPROPERTY()
-    UAIPerceptionComponent *PerceptionCompCpp;
+    virtual void BeginPlay() override;
 
-    UPROPERTY()
-    UAISenseConfig_Sight *SenseSightCompCpp;
+    virtual void OnMoveCompleted(FAIRequestID RequestID,
+                                 const FPathFollowingResult &Result) override;
 
-    void PerceptionUpdated();
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    class UAIPerceptionComponent *PerceptionCompCpp;
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    class UAISenseConfig_Sight *SenseSightCompCpp;
+
+  private:
+    TArray<AActor *> Waypoints;
+    int WaypointNum;
+    AActor *CurrentWaypoint;
+    int CurrentWaypointIdx;
+
+    bool Chasing;
+
+    UFUNCTION()
+    void OnPerceptionUpdated(const TArray<AActor *> &UpdatedActors);
+
+    void FollowRoute(bool Success = true);
+    void FollowRouteDelay();
 };
