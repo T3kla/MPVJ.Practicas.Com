@@ -21,23 +21,33 @@ class COM_05_API AAIEnemyControllerCpp : public AAIController
     virtual void OnMoveCompleted(FAIRequestID RequestID,
                                  const FPathFollowingResult &Result) override;
 
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    UPROPERTY(VisibleAnywhere)
     class UAIPerceptionComponent *PerceptionCompCpp;
 
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    UPROPERTY(VisibleAnywhere)
     class UAISenseConfig_Sight *SenseSightCompCpp;
 
   private:
+    UFUNCTION()
+    void OnPerceptionUpdated(const TArray<AActor *> &UpdatedActors);
+
     TArray<AActor *> Waypoints;
     int WaypointNum;
     AActor *CurrentWaypoint;
     int CurrentWaypointIdx;
 
     bool Chasing;
+    bool CanChase;
+    AActor *ChaseTarget;
 
-    UFUNCTION()
-    void OnPerceptionUpdated(const TArray<AActor *> &UpdatedActors);
-
-    void FollowRoute(bool Success = true);
+    void FollowRoute();
     void FollowRouteDelay();
+
+    void StartChase();
+    void StopChase();
+
+    void AllowChasing();
+    void BlockChasing();
+
+    void SetChasing(bool State);
 };

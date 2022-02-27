@@ -1,6 +1,7 @@
 #include "AIEnemyControllerCpp.h"
 
 #include "Perception/AIPerceptionComponent.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Kismet/GameplayStatics.h"
 #include "Waypoint.h"
@@ -29,7 +30,10 @@ void AAIEnemyControllerCpp::BeginPlay()
     WaypointNum = Waypoints.Num();
     CurrentWaypoint = Waypoints[0];
     CurrentWaypointIdx = 0;
+
+    CanChase = true;
     Chasing = false;
+    ChaseTarget = nullptr;
 
     FollowRoute();
 }
@@ -39,42 +43,56 @@ void AAIEnemyControllerCpp::OnMoveCompleted(FAIRequestID RequestID,
 {
     Super::OnMoveCompleted(RequestID, Result);
 
-    FollowRoute(Result.IsSuccess());
-}
+    auto Success = Result.IsSuccess();
 
-void AAIEnemyControllerCpp::OnPerceptionUpdated(const TArray<AActor *> &UpdatedActors)
-{
-    GEngine->AddOnScreenDebugMessage(
-        1, 100.f, FColor::Orange,
-        FString::Printf(TEXT("Perceived Actors: %d"), UpdatedActors.Num()), true, {2.f, 2.f});
-
-    if (UpdatedActors.Num() > 0)
+    if (Success)
     {
-        if (!Chasing)
+        if (Chasing) // Caught player
         {
-            StopMovement();
-            MoveToActor(UpdatedActors[0], -1.0f, true, true, false, 0, true);
+            StopChase();
+            BlockChasing();
+        }
+        else // Reached waypoint
+        {
+            AllowChasing();
         }
 
-        Chasing = true;
-    }
-    else
-    {
-        Chasing = false;
         FollowRoute();
     }
 }
 
-void AAIEnemyControllerCpp::FollowRoute(bool Success)
+void AAIEnemyControllerCpp::OnPerceptionUpdated(const TArray<AActor *> &UpdatedActors)
 {
-    if (!Success)
+    TArray<AActor *> Perceived;
+    PerceptionCompCpp->GetCurrentlyPerceivedActors(SenseSightCompCpp->GetSenseImplementation(),
+                                                   Perceived);
+
+    GEngine->AddOnScreenDebugMessage(1, 100.f, FColor::Orange,
+                                     FString::Printf(TEXT("Perceived Actors: %d"), Perceived.Num()),
+                                     true, {2.f, 2.f});
+
+    if (!CanChase)
         return;
 
+    if (Perceived.Num() > 0) // Perceived player
+    {
+        ChaseTarget = Perceived[0];
+        StartChase();
+    }
+    else // Lost player
+    {
+        StopChase();
+        FollowRoute();
+    }
+}
+
+void AAIEnemyControllerCpp::FollowRoute()
+{
     if (WaypointNum <= 0)
         return;
 
-    FTimerHandle UnusedHandle;
-    GetWorldTimerManager().SetTimer(UnusedHandle, this, &AAIEnemyControllerCpp::FollowRouteDelay,
+    FTimerHandle Handle;
+    GetWorldTimerManager().SetTimer(Handle, this, &AAIEnemyControllerCpp::FollowRouteDelay,
                                     TravelDelay, false);
 }
 
@@ -83,7 +101,49 @@ void AAIEnemyControllerCpp::FollowRouteDelay()
     MoveToActor(CurrentWaypoint, -1.0f, true, true, false, 0, true);
 
     CurrentWaypointIdx++;
+
     if (CurrentWaypointIdx >= WaypointNum)
         CurrentWaypointIdx = 0;
+
     CurrentWaypoint = Waypoints[CurrentWaypointIdx];
+}
+
+void AAIEnemyControllerCpp::StartChase()
+{
+    if (!CanChase || !ChaseTarget)
+        return;
+
+    SetChasing(true);
+    StopMovement();
+    MoveToActor(ChaseTarget, -1.0f, true, true, false, 0, true);
+}
+
+void AAIEnemyControllerCpp::StopChase()
+{
+    ChaseTarget = nullptr;
+
+    SetChasing(false);
+    StopMovement();
+}
+
+void AAIEnemyControllerCpp::AllowChasing()
+{
+    CanChase = true;
+}
+
+void AAIEnemyControllerCpp::BlockChasing()
+{
+    CanChase = false;
+}
+
+void AAIEnemyControllerCpp::SetChasing(bool State)
+{
+    if (State)
+        GEngine->AddOnScreenDebugMessage(2, 100.f, FColor::Cyan, TEXT("Chasing: true"), true,
+                                         {2.f, 2.f});
+    else
+        GEngine->AddOnScreenDebugMessage(2, 100.f, FColor::Cyan, TEXT("Chasing: false"), true,
+                                         {2.f, 2.f});
+
+    Chasing = State;
 }

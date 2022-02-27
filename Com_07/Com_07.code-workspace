@@ -1,0 +1,23 @@
+{
+    "folders": [
+        {
+            "name": "Com_07",
+            "path": "."
+        },
+        {
+            "name": "UE4",
+            "path": "C:\\Program Files\\Epic Games\\UE_4.27"
+        }
+    ],
+    "settings": {
+        "typescript.tsc.autoDetect": "off",
+        "C_Cpp.default.forcedInclude": [
+            "${default}",
+            "C:\\Repos\\MPVJ.Practicas.Com\\Com_07\\Intermediate\\Build\\Win64\\UE4Editor\\Development\\Com_07\\Definitions.Com_07.h",
+            "C:\\Repos\\MPVJ.Practicas.Com\\Com_07\\Intermediate\\Build\\Win64\\Com_07Editor\\Development\\Engine\\SharedPCH.Engine.ShadowErrors.h"
+        ]
+    },
+    "extensions": {
+        "recommendations": ["ms-vscode.cpptools", "ms-dotnettools.csharp"]
+    }
+}
